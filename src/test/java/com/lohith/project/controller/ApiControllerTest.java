@@ -2,6 +2,7 @@ package com.lohith.project.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lohith.project.Application;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -31,18 +32,20 @@ public class ApiControllerTest {
     HttpHeaders headers = new HttpHeaders();
     private Map<String, Object> createHotelRequestMap;
 
-    @Test
-    public void testToDeleteSaveAndGetHotelBasedOnTheRequestInput() {
-
+    @Before
+    public void setUp() throws Exception {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> deleteEntity = new HttpEntity<String>(null, headers);
-
         createHotelRequestMap = buildRequest("/CreateHotelAPIRequest.json");
-        // To clear hotel details in the database
+
         ResponseEntity<String> deleteResponse = restTemplate.exchange(
                 createURLWithPort("/hotels/deleteHotels"),
                 HttpMethod.DELETE, deleteEntity, String.class);
+    }
 
+    @Test
+    public void testToDeleteSaveAndGetHotelBasedOnTheRequestInput() {
+        
         HttpEntity<Map> entity = new HttpEntity<Map>(createHotelRequestMap, headers);
 
         // To save hotel in the database
